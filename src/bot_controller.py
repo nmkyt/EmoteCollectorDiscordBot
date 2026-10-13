@@ -1,4 +1,5 @@
 import asyncio
+import os
 import threading
 import discord
 from discord.ext import tasks, commands
@@ -8,10 +9,14 @@ from sqlalchemy.future import select
 import gui
 from tkinter import ttk
 import customtkinter as ctk
+from dotenv import load_dotenv
+
+load_dotenv()
 
 intents = discord.Intents.default()
 intents.messages = True
 intents.reactions = True
+intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
@@ -152,7 +157,8 @@ def update_database(message_id, option):
 if __name__ == "__main__":
     gui = gui.botGUI
 
-    bot_thread = threading.Thread(target=lambda: bot.run('ENTER YOUR BOT TOKEN HERE'))
+    # Run the bot in a separate thread to avoid blocking the GUI
+    bot_thread = threading.Thread(target=lambda: bot.run(os.getenv('DISCORD_TOKEN')))
     bot_thread.start()
 
     gui.mainloop()

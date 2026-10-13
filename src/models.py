@@ -1,12 +1,13 @@
-import discord
+import os
 import sqlalchemy
-from discord.ext import commands
 from sqlalchemy import create_engine, Column, Integer, BigInteger, String, DateTime, ForeignKey
 from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
 
 
 # Настройка подключения к базе данных PostgreSQL
-DATABASE_URL = "ENTER YOUR URL HERE"
+load_dotenv()
+DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=engine)
 session = Session()
